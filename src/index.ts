@@ -1,12 +1,13 @@
 import {Hono} from 'hono';
-import { render } from 'svelte/server';
 import Page from './Page.svelte';
+import { renderSveltePage } from './middleware';
 
 const app = new Hono();
 
+app.use('*', renderSveltePage);
+
 app.get('/', (c) => {
-	const result = render(Page);
-	return c.html(result.body);
-})
+	return c.renderSveltePage(Page);
+});
 
 export default app;
