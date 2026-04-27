@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun --watch src/index.ts"
+    "dev": "bunx --bun vite"
   },
   "devDependencies": {
     "@types/bun": "latest"
@@ -13,6 +13,10 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "hono": "^4.12.15"
+    "@hono/vite-dev-server": "^0.25.3",
+    "@sveltejs/vite-plugin-svelte": "^7.0.0",
+    "hono": "^4.12.15",
+    "svelte": "^5.55.5",
+    "vite": "^8.0.10"
   }
 }
