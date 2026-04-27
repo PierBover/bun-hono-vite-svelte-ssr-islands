@@ -12,6 +12,8 @@ export const renderSveltePage = createMiddleware(async (c, next) => {
 			<!DOCTYPE html>
 			<html>
 				<head>
+					<script type="module" src="/src/islands/islands-entry.ts"></script>
+					<script type="module" src="/@vite/client"></script>
 					${raw(head)}
 				</head>
 				<body>
