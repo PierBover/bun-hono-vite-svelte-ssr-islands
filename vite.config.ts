@@ -9,8 +9,6 @@ export default defineConfig(({ isSsrBuild }) => {
 			svelte({
 				emitCss: true,
 				compilerOptions: {
-					// injecting all css from the components for now
-					// I couldn't figure out how to solve the css properly
 					css: 'injected'
 				}
 			}),

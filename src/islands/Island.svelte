@@ -1,6 +1,6 @@
 <script lang="ts" generics="T extends import('svelte').Component<any, any, any>">
 	import {untrack, type Component} from "svelte";
-	import {getIslandComponentPath} from "./islands/utils";
+	import {getIslandComponentPath} from "./utils";
 
 	// all this TS stuff is to get the types
 	// of the props from the island component

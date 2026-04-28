@@ -14,13 +14,12 @@ export const renderSveltePage = createMiddleware(async (c, next) => {
 	c.renderSveltePage = async (svelteComponent:Component) => {
 
 		const {body, head} = render(svelteComponent);
-		const hasIslands = body.includes('data-island-path');
-		let islandsEntry = '', stylesEntry = '';
+		let clientEntry = '', stylesEntry = '';
 
 		if (isDev) {
-			islandsEntry = '<script type="module" src="/src/client-entry.ts"></script>';
+			clientEntry = '<script type="module" src="/src/client-entry.ts"></script>';
 		} else {
-			islandsEntry = `<script type="module" src="${viteManifestJson!['src/client-entry.ts']!.file}"></script>`;
+			clientEntry = `<script type="module" src="${viteManifestJson!['src/client-entry.ts']!.file}"></script>`;
 			stylesEntry = `<link href="${viteManifestJson!['style.css']!.file}" rel="stylesheet"/>`;
 		}
 
@@ -35,7 +34,7 @@ export const renderSveltePage = createMiddleware(async (c, next) => {
 				</head>
 				<body>
 					${raw(body)}
-					${hasIslands && raw(islandsEntry)}
+					${raw(clientEntry)}
 				</body>
 			</html>
 		`);
