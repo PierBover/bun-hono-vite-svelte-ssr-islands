@@ -1,5 +1,9 @@
 /// <reference lib='dom' />
+import './css/index.css';
 import { hydrate, mount, type Component } from 'svelte';
+
+const isDev = import.meta.env.DEV;
+const isProd = import.meta.env.PROD;
 
 const modules = import.meta.glob('/src/islands/**/*.svelte');
 

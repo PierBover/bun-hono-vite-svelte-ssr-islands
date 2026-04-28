@@ -4,7 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bunx --bun vite"
+    "dev": "bunx --bun vite",
+    "build": "rm -rf dist && bunx --bun vite build && bunx --bun vite build --ssr",
+    "start": "NODE_ENV=production bun dist/server/index.js"
   },
   "devDependencies": {
     "@types/bun": "latest"
