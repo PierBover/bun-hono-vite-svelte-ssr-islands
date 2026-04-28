@@ -1,9 +1,9 @@
 <script lang="ts">
-	import {onMount} from 'svelte';
+	import {onMount, untrack} from 'svelte';
 
 	type Props = {serverTime:string};
 	const {serverTime}:Props = $props();
-	let time:string = $state(serverTime);
+	let time:string = $state(untrack(() => serverTime));
 
 	function updateTime() {
 		time = (new Date().toISOString());

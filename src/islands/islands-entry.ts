@@ -39,6 +39,51 @@ async function hydrateIsland(element: HTMLElement) {
 }
 
 const elements = document.querySelectorAll(
-	'[data-island-path]',
+	'[data-island-path]:not([data-island-hydrate-on-visible]):not([data-island-hydrate-on-media])',
 ) as NodeListOf<HTMLElement>;
 for (const element of elements) hydrateIsland(element);
+
+// hydrate on visible
+const elementsToHydrateOnVisible = document.querySelectorAll(
+	'[data-island-path][data-island-hydrate-on-visible]',
+) as NodeListOf<HTMLElement>;
+
+if (elementsToHydrateOnVisible.length > 0) {
+	function onObserve(entries: IntersectionObserverEntry[], observer: IntersectionObserver) {
+		entries.forEach((entry) => {
+			if (entry.isIntersecting) {
+				// stop observing the element once hydrated
+				observer.unobserve(entry.target);
+				hydrateIsland(entry.target as HTMLElement);
+			}
+		});
+	}
+
+	const observer = new IntersectionObserver(onObserve);
+	for (const element of elementsToHydrateOnVisible) observer.observe(element);
+}
+
+// hydrate on media query
+const elementsToHydrateOnMedia = document.querySelectorAll(
+	'[data-island-path][data-island-hydrate-on-media]',
+) as NodeListOf<HTMLElement>;
+
+for (const element of elementsToHydrateOnMedia) {
+	const query = element.getAttribute('data-island-hydrate-on-media')!;
+	const mediaQueryList = window.matchMedia(query);
+
+	function handler(event: MediaQueryListEvent | MediaQueryList) {
+		if (event.matches) {
+			// remove the listener after the match
+			mediaQueryList.removeEventListener('change', handler);
+			hydrateIsland(element);
+		}
+	}
+
+	// hydrate immeditaly if the media query matches already
+	if (mediaQueryList.matches) {
+		hydrateIsland(element);
+	} else {
+		mediaQueryList.addEventListener('change', handler);
+	}
+}

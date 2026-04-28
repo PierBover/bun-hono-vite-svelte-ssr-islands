@@ -5,7 +5,9 @@ import bunAdapter from '@hono/vite-dev-server/bun';
 
 export default defineConfig({
 	plugins: [
-		svelte(),
+		svelte({
+			emitCss: true
+		}),
 		devServer({
 			entry: 'src/index.ts',
 			adapter: bunAdapter
