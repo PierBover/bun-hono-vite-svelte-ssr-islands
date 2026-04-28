@@ -1,3 +1,3 @@
 <nav>
-	<a href="/">Home</a> | <a href="/about">About</a>
+	<a href="/" data-prefetch>Home</a> | <a href="/about" data-prefetch>About</a>
 </nav>
