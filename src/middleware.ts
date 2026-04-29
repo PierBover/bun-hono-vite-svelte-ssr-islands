@@ -3,6 +3,8 @@ import { html, raw } from 'hono/html';
 import type {Component} from 'svelte';
 import { render } from 'svelte/server';
 import type { Manifest, ViteDevServer } from 'vite';
+import type {RenderOptions} from './types';
+import {type RequestContext, REQUEST_CONTEXT, PAGE_CONTEXT} from './pages/types';
 
 const isDev = import.meta.env.DEV;
 const isProd = import.meta.env.PROD;
@@ -11,9 +13,23 @@ const viteManifest = isProd ? await Bun.file('dist/client/.vite/manifest.json').
 const viteManifestJson = viteManifest ? (JSON.parse(viteManifest) as Manifest) : null;
 
 export const renderSveltePage = createMiddleware(async (c, next) => {
-	c.renderSveltePage = async (svelteComponent:Component) => {
+	c.renderSveltePage = async (svelteComponent:Component, renderOptions:RenderOptions, pageContext?:any) => {
 
-		const {body, head} = render(svelteComponent);
+		const {pageTitle} = renderOptions;
+
+		const contexts = new Map();
+		const requestContext:RequestContext = {
+			path: c.req.path
+		};
+
+		contexts.set(REQUEST_CONTEXT, requestContext);
+		if (pageContext) contexts.set(PAGE_CONTEXT, pageContext);
+
+		const {body, head} = render(
+			svelteComponent,
+			{context:contexts}
+		);
+
 		let clientEntry = '', stylesEntry = '';
 
 		if (isDev) {
@@ -31,6 +47,7 @@ export const renderSveltePage = createMiddleware(async (c, next) => {
 					${raw(head)}
 					${isDev && raw('<script type="module" src="/@vite/client"></script>')}
 					${isProd && raw(getJsPreloadTagsFromManifest())}
+					<title>${pageTitle}</title>
 				</head>
 				<body>
 					${raw(body)}

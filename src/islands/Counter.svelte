@@ -17,7 +17,7 @@
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
-		margin: 40rem auto 4rem;
+		margin: 60rem auto 4rem;
 
 		h4 {
 			font-size: 8rem;
